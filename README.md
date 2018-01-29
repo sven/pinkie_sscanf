@@ -4,10 +4,10 @@ This module contains the sscanf-implementation of PINKIE. It can be used
 separately to add a minimal number-parsing sscanf-functionality.
 
 It currently supports the following patterns:
-  %i - signed integers
-  %u - unsigned integers
-  %% - percent sign
-  %n - store current position in pointer
+  * %i - signed integers
+  * %u - unsigned integers
+  * %% - percent sign
+  * %n - store current position in pointer
 
 Currently there is no support for %x but hex numbers can be parsed with %i and
 %u if they are beginning with 0x.
