@@ -121,7 +121,7 @@ int pinkie_sscanf(
 
                 case 'n':
                     /* position */
-                    *(va_arg(ap, int *)) = str - str_beg;
+                    *(va_arg(ap, int *)) = (int) (str - str_beg);
                     break;
             }
 
@@ -193,7 +193,7 @@ const char * pinkie_s2i(
         str--;
 
         /* apply multiplicator to conv result */
-        cur = pinkie_c2i(*str, base) * mul;
+        cur = (PINKIE_SSCANF_UINT_T) pinkie_c2i(*str, base) * mul;
 
         if ((num_max - cur) < num) {
             str_end = 0;
@@ -207,21 +207,21 @@ const char * pinkie_s2i(
 bail:
     /* convert result to given width */
     if (sizeof(uint8_t) == width) {
-        *((uint8_t *) val) = (flg_neg) ? -num : num;
+        *((uint8_t *) val) = (flg_neg) ? (uint8_t) -num : (uint8_t) num;
     }
 #if PINKIE_CFG_SSCANF_MAX_INT >= 2
     else if (sizeof(uint16_t) == width) {
-        *((uint16_t *) val) = (flg_neg) ? -num : num;
+        *((uint16_t *) val) = (flg_neg) ? (uint16_t) -num : (uint16_t) num;
     }
 #endif
 #if PINKIE_CFG_SSCANF_MAX_INT >= 4
     else if (sizeof(uint32_t) == width) {
-        *((uint32_t *) val) = (flg_neg) ? -num : num;
+        *((uint32_t *) val) = (flg_neg) ? (uint32_t) -num : (uint32_t) num;
     }
 #endif
 #if PINKIE_CFG_SSCANF_MAX_INT >= 8
     else if (sizeof(uint64_t) == width) {
-        *((uint64_t *) val) = (flg_neg) ? -num : num;
+        *((uint64_t *) val) = (flg_neg) ? (uint64_t) -num : (uint64_t) num;
     }
 #endif
 
@@ -232,7 +232,7 @@ bail:
 /*****************************************************************************/
 /** Convert character to integer
  *
- * @retval number or -1 if not a number
+ * @returns number or -1 if not a number
  */
 int pinkie_c2i(
     const char chr,                             /**< character */

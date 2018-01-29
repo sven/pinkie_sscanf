@@ -3,6 +3,10 @@
 #include <string.h>
 #include "pinkie_sscanf.h"
 
+
+/*****************************************************************************/
+/* Defines */
+/*****************************************************************************/
 #define NUM_INT8_MIN    (-128)
 #define NUM_INT16_MIN   (-32768)
 #define NUM_INT32_MIN   (-2147483647L - 1L)
@@ -43,7 +47,13 @@
 #define STR_UINT32_MAX  "4294967295"
 #define STR_UINT64_MAX  "18446744073709551615"
 
+#define STR_FMT_PRINTF  "%hhi %hi %"PRIi32" %"PRIi64" %hhu %hu %"PRIu32" %"PRIu64
+#define STR_FMT_SCANF   "%hhi %hi %"SCNi32" %"SCNi64" %hhu %hu %"SCNu32" %"SCNu64
 
+
+/*****************************************************************************/
+/* Structures */
+/*****************************************************************************/
 typedef struct {
     int8_t i8;
     int16_t i16;
@@ -57,10 +67,28 @@ typedef struct {
 } __attribute__((packed)) num_t;
 
 
-num_t num;
+/*****************************************************************************/
+/* Variables */
+/*****************************************************************************/
+static num_t num;                               /**< number holder */
 
 
-void num_reset(
+/*****************************************************************************/
+/* Prototypes */
+/*****************************************************************************/
+static void num_reset(
+    void
+);
+
+static char * num_check(
+    num_t *numx
+);
+
+
+/*****************************************************************************/
+/** Reset number structure
+ */
+static void num_reset(
     void
 )
 {
@@ -68,7 +96,10 @@ void num_reset(
 }
 
 
-char * num_check(
+/*****************************************************************************/
+/** Check if parsed numbers match preset
+ */
+static char * num_check(
     num_t *numx
 )
 {
@@ -76,6 +107,9 @@ char * num_check(
 }
 
 
+/*****************************************************************************/
+/** Test PINKIE SSCANF against border values
+ */
 int main(
     void
 )
@@ -85,20 +119,20 @@ int main(
     num_t num2 = { NUM_INT8_MAX, NUM_INT16_MAX, NUM_INT32_MAX, NUM_INT64_MAX, NUM_UINT8_MAX, NUM_UINT16_MAX, NUM_UINT32_MAX, NUM_UINT64_MAX };
 
     num_reset();
-    pinkie_sscanf("-1 -2 -3 -4 1 2 3 4", "%hhi %hi %i %li %hhu %hu %u %lu", &num.i8, &num.i16, &num.i32, &num.i64, &num.u8, &num.u16, &num.u32, &num.u64);
+    pinkie_sscanf("-1 -2 -3 -4 1 2 3 4", STR_FMT_SCANF, &num.i8, &num.i16, &num.i32, &num.i64, &num.u8, &num.u16, &num.u32, &num.u64);
     printf("\nin:  -1 -2 -3 -4 1 2 3 4\n");
-    printf("out: %hhi %hi %i %li %hhu %hu %u %lu\n", num.i8, num.i16, num.i32, num.i64, num.u8, num.u16, num.u32, num.u64);
+    printf("out: "STR_FMT_PRINTF"\n", num.i8, num.i16, num.i32, num.i64, num.u8, num.u16, num.u32, num.u64);
     printf("res: %s\n", num_check(&num0));
 
     num_reset();
-    pinkie_sscanf(STR_INT8_MIN " " STR_INT16_MIN " " STR_INT32_MIN " " STR_INT64_MIN " " STR_UINT8_MIN " " STR_UINT16_MIN " " STR_UINT32_MIN " " STR_UINT64_MIN, "%hhi %hi %i %li %hhu %hu %u %lu", &num.i8, &num.i16, &num.i32, &num.i64, &num.u8, &num.u16, &num.u32, &num.u64);
+    pinkie_sscanf(STR_INT8_MIN " " STR_INT16_MIN " " STR_INT32_MIN " " STR_INT64_MIN " " STR_UINT8_MIN " " STR_UINT16_MIN " " STR_UINT32_MIN " " STR_UINT64_MIN, STR_FMT_SCANF, &num.i8, &num.i16, &num.i32, &num.i64, &num.u8, &num.u16, &num.u32, &num.u64);
     printf("\nin:  " STR_INT8_MIN " " STR_INT16_MIN " " STR_INT32_MIN " " STR_INT64_MIN " " STR_UINT8_MIN " " STR_UINT16_MIN " " STR_UINT32_MIN " " STR_UINT64_MIN "\n");
-    printf("out: %hhi %hi %i %li %hhu %hu %u %lu\n", num.i8, num.i16, num.i32, num.i64, num.u8, num.u16, num.u32, num.u64);
+    printf("out: "STR_FMT_PRINTF"\n", num.i8, num.i16, num.i32, num.i64, num.u8, num.u16, num.u32, num.u64);
     printf("res: %s\n", num_check(&num1));
 
     num_reset();
-    pinkie_sscanf(STR_INT8_MAX " " STR_INT16_MAX " " STR_INT32_MAX " " STR_INT64_MAX " " STR_UINT8_MAX " " STR_UINT16_MAX " " STR_UINT32_MAX " " STR_UINT64_MAX, "%hhi %hi %i %li %hhu %hu %u %lu", &num.i8, &num.i16, &num.i32, &num.i64, &num.u8, &num.u16, &num.u32, &num.u64);
+    pinkie_sscanf(STR_INT8_MAX " " STR_INT16_MAX " " STR_INT32_MAX " " STR_INT64_MAX " " STR_UINT8_MAX " " STR_UINT16_MAX " " STR_UINT32_MAX " " STR_UINT64_MAX, STR_FMT_SCANF, &num.i8, &num.i16, &num.i32, &num.i64, &num.u8, &num.u16, &num.u32, &num.u64);
     printf("\nin:  " STR_INT8_MAX " " STR_INT16_MAX " " STR_INT32_MAX " " STR_INT64_MAX " " STR_UINT8_MAX " " STR_UINT16_MAX " " STR_UINT32_MAX " " STR_UINT64_MAX "\n");
-    printf("out: %hhi %hi %i %li %hhu %hu %u %lu\n", num.i8, num.i16, num.i32, num.i64, num.u8, num.u16, num.u32, num.u64);
+    printf("out: "STR_FMT_PRINTF"\n", num.i8, num.i16, num.i32, num.i64, num.u8, num.u16, num.u32, num.u64);
     printf("res: %s\n", num_check(&num2));
 }
