@@ -47,8 +47,16 @@
 #define STR_UINT32_MAX  "4294967295"
 #define STR_UINT64_MAX  "18446744073709551615"
 
+#define STR_XINT8_MAX   "ff"
+#define STR_XINT16_MAX  "ffff"
+#define STR_XINT32_MAX  "ffffffff"
+#define STR_XINT64_MAX  "ffffffffffffffff"
+
 #define STR_FMT_PRINTF  "%hhi %hi %"PRIi32" %"PRIi64" %hhu %hu %"PRIu32" %"PRIu64
 #define STR_FMT_SCANF   "%hhi %hi %"SCNi32" %"SCNi64" %hhu %hu %"SCNu32" %"SCNu64
+
+#define STR_XFMT_PRINTF "%hhx %hx %"PRIx32" %"PRIx64" 0x%hhx 0x%hx 0x%"PRIx32" 0x%"PRIx64
+#define STR_XFMT_SCANF  "%hhx %hx %"SCNx32" %"SCNx64" %hhu %hu %"SCNu32" %"SCNu64
 
 
 /*****************************************************************************/
@@ -117,6 +125,8 @@ int main(
     num_t num0 = { -1, -2, -3, -4, 1, 2, 3, 4 };
     num_t num1 = { NUM_INT8_MIN, NUM_INT16_MIN, NUM_INT32_MIN, NUM_INT64_MIN, NUM_UINT8_MIN, NUM_UINT16_MIN, NUM_UINT32_MIN, NUM_UINT64_MIN };
     num_t num2 = { NUM_INT8_MAX, NUM_INT16_MAX, NUM_INT32_MAX, NUM_INT64_MAX, NUM_UINT8_MAX, NUM_UINT16_MAX, NUM_UINT32_MAX, NUM_UINT64_MAX };
+    num_t num3 = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    num_t num4 = { (int8_t) NUM_UINT8_MAX, (int16_t) NUM_UINT16_MAX, (int32_t) NUM_UINT32_MAX, (int64_t) NUM_UINT64_MAX, NUM_UINT8_MAX, NUM_UINT16_MAX, NUM_UINT32_MAX, NUM_UINT64_MAX };
 
     num_reset();
     pinkie_sscanf("-1 -2 -3 -4 1 2 3 4", STR_FMT_SCANF, &num.i8, &num.i16, &num.i32, &num.i64, &num.u8, &num.u16, &num.u32, &num.u64);
@@ -135,4 +145,16 @@ int main(
     printf("\nin:  " STR_INT8_MAX " " STR_INT16_MAX " " STR_INT32_MAX " " STR_INT64_MAX " " STR_UINT8_MAX " " STR_UINT16_MAX " " STR_UINT32_MAX " " STR_UINT64_MAX "\n");
     printf("out: "STR_FMT_PRINTF"\n", num.i8, num.i16, num.i32, num.i64, num.u8, num.u16, num.u32, num.u64);
     printf("res: %s\n", num_check(&num2));
+
+    num_reset();
+    pinkie_sscanf("0 0 0 0 0x00 0x0000 0x00000000 0x0000000000000000", STR_XFMT_SCANF, &num.i8, &num.i16, &num.i32, &num.i64, &num.u8, &num.u16, &num.u32, &num.u64);
+    printf("\nin:  0 0 0 0 0x00 0x0000 0x00000000 0x0000000000000000\n");
+    printf("out: "STR_XFMT_PRINTF"\n", num.i8, num.i16, num.i32, num.i64, num.u8, num.u16, num.u32, num.u64);
+    printf("res: %s\n", num_check(&num3));
+
+    num_reset();
+    pinkie_sscanf(STR_XINT8_MAX " " STR_XINT16_MAX " " STR_XINT32_MAX " " STR_XINT64_MAX " 0x" STR_XINT8_MAX " 0x" STR_XINT16_MAX " 0x" STR_XINT32_MAX " 0x" STR_XINT64_MAX, STR_XFMT_SCANF, &num.i8, &num.i16, &num.i32, &num.i64, &num.u8, &num.u16, &num.u32, &num.u64);
+    printf("\nin:  " STR_XINT8_MAX " " STR_XINT16_MAX " " STR_XINT32_MAX " " STR_XINT64_MAX " 0x" STR_XINT8_MAX " 0x" STR_XINT16_MAX " 0x" STR_XINT32_MAX " 0x" STR_XINT64_MAX "\n");
+    printf("out: "STR_XFMT_PRINTF"\n", num.i8, num.i16, num.i32, num.i64, num.u8, num.u16, num.u32, num.u64);
+    printf("res: %s\n", num_check(&num4));
 }

@@ -6,11 +6,9 @@ separately to add a minimal number-parsing sscanf-functionality.
 It currently supports the following patterns:
   * %i - signed integers
   * %u - unsigned integers
+  * %x - hex values
   * %% - percent sign
   * %n - store current position in pointer
-
-Currently there is no support for %x but hex numbers can be parsed with %i and
-%u if they are beginning with 0x.
 
 This implementation supports up to 64-bit numbers which can be configured by
 the define PINKIE\_CFG\_SSCANF\_MAX\_INT:

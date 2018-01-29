@@ -82,27 +82,28 @@ int pinkie_sscanf(
 
                     /* fallthrough to convert number */
 
+                case 'x':
                 case 'u':
                     /* unsigned integer */
                     if (!int_width) {
-                        str = pinkie_s2i(str, sizeof(unsigned int), UINT_MAX, va_arg(ap, unsigned int *), flg_neg, 0);
+                        str = pinkie_s2i(str, sizeof(unsigned int), UINT_MAX, va_arg(ap, unsigned int *), flg_neg, ('x' == *fmt) ? 16 : 0);
                     }
                     else if (sizeof(uint8_t) == int_width) {
-                        str = pinkie_s2i(str, sizeof(uint8_t), UINT8_MAX, va_arg(ap, uint8_t *), flg_neg, 0);
+                        str = pinkie_s2i(str, sizeof(uint8_t), UINT8_MAX, va_arg(ap, uint8_t *), flg_neg, ('x' == *fmt) ? 16 : 0);
                     }
 #if (PINKIE_CFG_SSCANF_MAX_INT >= 2) && (UINT16_MAX != UINT_MAX)
                     else if (sizeof(uint16_t) == int_width) {
-                        str = pinkie_s2i(str, sizeof(uint16_t), UINT16_MAX, va_arg(ap, uint16_t *), flg_neg, 0);
+                        str = pinkie_s2i(str, sizeof(uint16_t), UINT16_MAX, va_arg(ap, uint16_t *), flg_neg, ('x' == *fmt) ? 16 : 0);
                     }
 #endif
 #if (PINKIE_CFG_SSCANF_MAX_INT >= 4) && (UINT32_MAX != UINT_MAX)
                     else if (sizeof(uint32_t) == int_width) {
-                        str = pinkie_s2i(str, sizeof(uint32_t), UINT32_MAX, va_arg(ap, uint32_t *), flg_neg, 0);
+                        str = pinkie_s2i(str, sizeof(uint32_t), UINT32_MAX, va_arg(ap, uint32_t *), flg_neg, ('x' == *fmt) ? 16 : 0);
                     }
 #endif
 #if (PINKIE_CFG_SSCANF_MAX_INT >= 8) && (UINT64_MAX != UINT_MAX)
                     else if (sizeof(uint64_t) == int_width) {
-                        str = pinkie_s2i(str, sizeof(uint64_t), UINT64_MAX, va_arg(ap, uint64_t *), flg_neg, 0);
+                        str = pinkie_s2i(str, sizeof(uint64_t), UINT64_MAX, va_arg(ap, uint64_t *), flg_neg, ('x' == *fmt) ? 16 : 0);
                     }
 #endif
 
