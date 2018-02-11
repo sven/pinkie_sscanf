@@ -18,6 +18,16 @@
 
 
 /*****************************************************************************/
+/* Compiler */
+/*****************************************************************************/
+#ifdef __GNUC__
+#  define PINKIE_CC_ATTR_POST_SSCANF    __attribute__((format(scanf, 2, 3)))
+#else
+#  define PINKIE_CC_ATTR_POST_SSCANF
+#endif
+
+
+/*****************************************************************************/
 /* Defines */
 /*****************************************************************************/
 #if PINKIE_CFG_SSCANF_MAX_INT == 1
@@ -52,8 +62,7 @@ int pinkie_sscanf(
     const char *str,                            /**< input string */
     const char *fmt,                            /**< format string */
     ...                                         /**< variable arguments */
-) __attribute__((format(scanf, 2, 3)));
-
+) PINKIE_CC_ATTR_POST_SSCANF;
 
 const char * pinkie_s2i(
     const char *str,                            /**< string */
