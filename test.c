@@ -79,6 +79,7 @@ typedef struct {
 /* Variables */
 /*****************************************************************************/
 static num_t num;                               /**< number holder */
+static int res_glob;                            /**< global result */
 
 
 /*****************************************************************************/
@@ -111,7 +112,12 @@ static char * num_check(
     num_t *numx
 )
 {
-    return (!memcmp(numx, &num, sizeof(num_t)) ? "ok" : "fail");
+    if (!memcmp(numx, &num, sizeof(num_t))) {
+        return "ok";
+    }
+
+    res_glob = 1;
+    return "fail";
 }
 
 
@@ -157,4 +163,6 @@ int main(
     printf("\nin:  " STR_XINT8_MAX " " STR_XINT16_MAX " " STR_XINT32_MAX " " STR_XINT64_MAX " 0x" STR_XINT8_MAX " 0x" STR_XINT16_MAX " 0x" STR_XINT32_MAX " 0x" STR_XINT64_MAX "\n");
     printf("out: "STR_XFMT_PRINTF"\n", num.i8, num.i16, num.i32, num.i64, num.u8, num.u16, num.u32, num.u64);
     printf("res: %s\n", num_check(&num4));
+
+    return res_glob;
 }
