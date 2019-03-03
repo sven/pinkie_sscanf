@@ -11,19 +11,6 @@
 
 
 /*****************************************************************************/
-/* Prototypes */
-/*****************************************************************************/
-const char * pinkie_s2i(
-    const char *str,                            /**< string */
-    unsigned int width,                         /**< width = sizeof(type) */
-    PINKIE_SSCANF_UINT_T num_max,               /**< max num value */
-    void *val,                                  /**< value */
-    unsigned int flg_neg,                       /**< negative flag */
-    unsigned int base                           /**< base */
-);
-
-
-/*****************************************************************************/
 /** Pinkie Just Enough Sscanf To Work
  *
  * Supports the following formatters:
