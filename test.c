@@ -137,6 +137,10 @@ int main(
     num_t num2 = { NUM_INT8_MAX, NUM_INT16_MAX, NUM_INT32_MAX, NUM_INT64_MAX, NUM_UINT8_MAX, NUM_UINT16_MAX, NUM_UINT32_MAX, NUM_UINT64_MAX };
     num_t num3 = { 0, 0, 0, 0, 0, 0, 0, 0 };
     num_t num4 = { (int8_t) NUM_UINT8_MAX, (int16_t) NUM_UINT16_MAX, (int32_t) NUM_UINT32_MAX, (int64_t) NUM_UINT64_MAX, NUM_UINT8_MAX, NUM_UINT16_MAX, NUM_UINT32_MAX, NUM_UINT64_MAX };
+    unsigned int num5;
+    unsigned int num6;
+    unsigned int num7;
+    unsigned int num8;
 
     num_reset();
     SSCANF("-1 -2 -3 -4 1 2 3 4", STR_FMT_SCANF, &num.i8, &num.i16, &num.i32, &num.i64, &num.u8, &num.u16, &num.u32, &num.u64);
@@ -167,6 +171,34 @@ int main(
     printf("\nin:  " STR_XINT8_MAX " " STR_XINT16_MAX " " STR_XINT32_MAX " " STR_XINT64_MAX " 0x" STR_XINT8_MAX " 0x" STR_XINT16_MAX " 0x" STR_XINT32_MAX " 0x" STR_XINT64_MAX "\n");
     printf("out: "STR_XFMT_PRINTF"\n", num.i8, num.i16, num.i32, num.i64, num.u8, num.u16, num.u32, num.u64);
     printf("res: %s\n", num_check(&num4));
+
+    /* unneeded here */
+    num_reset();
+    SSCANF("abc-012.de", "abc-%3u.de", &num5);
+    printf("\nin:  abc-012.de\n");
+    printf("out: %u\n", num5);
+    printf("res: %s\n", (num5 == 12) ? "ok" : "fail");
+
+    /* unneeded here */
+    num_reset();
+    SSCANF("abc-12.de", "abc-%3u.de", &num5);
+    printf("\nin:  abc-12.de\n");
+    printf("out: %u\n", num5);
+    printf("res: %s\n", (num5 == 12) ? "ok" : "fail");
+
+    /* unneeded here */
+    num_reset();
+    SSCANF("abc-1234.de", "abc-%3u.de", &num5);
+    printf("\nin:  abc-1234.de\n");
+    printf("out: %u\n", num5);
+    printf("res: %s\n", (num5 == 123) ? "ok" : "fail");
+
+    /* unneeded here */
+    num_reset();
+    SSCANF("abc-1234.de def:54321", "abc-%3u4.de def:%1u%1u%1u", &num5, &num6, &num7, &num8);
+    printf("\nin:  abc-1234.de def:54321\n");
+    printf("out: %u, %u, %u, %u\n", num5, num6, num7, num8);
+    printf("res: %s\n", ((num5 == 123) && (num6 == 5) && (num7 == 4) && (num8 == 3)) ? "ok" : "fail");
 
     return res_glob;
 }
