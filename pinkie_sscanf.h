@@ -70,7 +70,8 @@ const char * pinkie_s2i(
     PINKIE_SSCANF_UINT_T num_max,               /**< max num value */
     void *val,                                  /**< value */
     unsigned int flg_neg,                       /**< negative flag */
-    unsigned int base                           /**< base */
+    unsigned int base,                          /**< base */
+    unsigned int max_field_width                /**< maximum field width */
 );
 
 int pinkie_c2i(

@@ -26,6 +26,7 @@ int pinkie_sscanf(
     va_list ap;                                 /* variable argument list */
     unsigned int flg_format = 0;                /* format flag */
     unsigned int int_width = 0;                 /* integer width */
+    unsigned int max_field_width = 0;           /* maximum character count */
     const char *str_beg = str;                  /* string begin */
     int args = 0;                               /* parsed arguments counter */
     unsigned int flg_neg = 0;                   /* negative flag */
@@ -44,6 +45,11 @@ int pinkie_sscanf(
             if ('l' == *fmt) {
                 int_width = (!int_width) ? sizeof(long) : sizeof(long long);
                 continue;
+            }
+
+            /* number width */
+            if (('0' <= *fmt) && ('9' >= *fmt)) {
+                fmt = pinkie_s2i(fmt, sizeof(unsigned int), UINT_MAX, &max_field_width, 0, 10, 0);
             }
 
             /* handle conversion */
@@ -65,29 +71,32 @@ int pinkie_sscanf(
                 case 'u':
                     /* unsigned integer */
                     if (!int_width) {
-                        str = pinkie_s2i(str, sizeof(unsigned int), UINT_MAX, va_arg(ap, unsigned int *), flg_neg, ('x' == *fmt) ? 16 : 0);
+                        str = pinkie_s2i(str, sizeof(unsigned int), UINT_MAX, va_arg(ap, unsigned int *), flg_neg, ('x' == *fmt) ? 16 : 0, max_field_width);
                     }
                     else if (sizeof(uint8_t) == int_width) {
-                        str = pinkie_s2i(str, sizeof(uint8_t), UINT8_MAX, va_arg(ap, uint8_t *), flg_neg, ('x' == *fmt) ? 16 : 0);
+                        str = pinkie_s2i(str, sizeof(uint8_t), UINT8_MAX, va_arg(ap, uint8_t *), flg_neg, ('x' == *fmt) ? 16 : 0, max_field_width);
                     }
 #if (PINKIE_CFG_SSCANF_MAX_INT >= 2) && (UINT16_MAX != UINT_MAX)
                     else if (sizeof(uint16_t) == int_width) {
-                        str = pinkie_s2i(str, sizeof(uint16_t), UINT16_MAX, va_arg(ap, uint16_t *), flg_neg, ('x' == *fmt) ? 16 : 0);
+                        str = pinkie_s2i(str, sizeof(uint16_t), UINT16_MAX, va_arg(ap, uint16_t *), flg_neg, ('x' == *fmt) ? 16 : 0, max_field_width);
                     }
 #endif
 #if (PINKIE_CFG_SSCANF_MAX_INT >= 4) && (UINT32_MAX != UINT_MAX)
                     else if (sizeof(uint32_t) == int_width) {
-                        str = pinkie_s2i(str, sizeof(uint32_t), UINT32_MAX, va_arg(ap, uint32_t *), flg_neg, ('x' == *fmt) ? 16 : 0);
+                        str = pinkie_s2i(str, sizeof(uint32_t), UINT32_MAX, va_arg(ap, uint32_t *), flg_neg, ('x' == *fmt) ? 16 : 0, max_field_width);
                     }
 #endif
 #if (PINKIE_CFG_SSCANF_MAX_INT >= 8) && (UINT64_MAX != UINT_MAX)
                     else if (sizeof(uint64_t) == int_width) {
-                        str = pinkie_s2i(str, sizeof(uint64_t), UINT64_MAX, va_arg(ap, uint64_t *), flg_neg, ('x' == *fmt) ? 16 : 0);
+                        str = pinkie_s2i(str, sizeof(uint64_t), UINT64_MAX, va_arg(ap, uint64_t *), flg_neg, ('x' == *fmt) ? 16 : 0, max_field_width);
                     }
 #endif
 
                     /* reset integer width */
                     int_width = 0;
+
+                    /* reset maximum field width */
+                    max_field_width = 0;
 
                     /* update args */
                     args++;
@@ -136,7 +145,8 @@ const char * pinkie_s2i(
     PINKIE_SSCANF_UINT_T num_max,               /**< max num value */
     void *val,                                  /**< value */
     unsigned int flg_neg,                       /**< negative flag */
-    unsigned int base                           /**< base */
+    unsigned int base,                          /**< base */
+    unsigned int max_field_width                /**< maximum field width */
 )
 {
     PINKIE_SSCANF_UINT_T num = 0;               /* number */
@@ -157,6 +167,9 @@ const char * pinkie_s2i(
 
     /* count numbers */
     for (; (*str) && (-1 != pinkie_c2i(*str, base)); str++) {
+        if ((max_field_width) && (max_field_width <= cnt)) {
+            break;
+        }
         cnt++;
     }
 
