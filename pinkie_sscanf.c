@@ -153,16 +153,19 @@ const char * pinkie_s2i(
     PINKIE_SSCANF_UINT_T mul = 1;               /* multiplicator */
     PINKIE_SSCANF_UINT_T cur;                   /* current number */
     unsigned int cnt = 0;                       /* counter */
-    const char *str_end = NULL;                 /* number end */
+    const char *str_end;                        /* number end */
 
-    /* detect number type */
-    if (0 == base) {
+    /* hex detection */
+    if ((0 == base) || (16 == base)) {
         if (((str[0]) && ('0' == str[0])) && ((str[1]) && ('x' == str[1]))) {
             base = 16;
             str += 2;
-        } else {
-            base = 10;
         }
+    }
+
+    /* default to base 10 */
+    if (0 == base) {
+        base = 10;
     }
 
     /* count numbers */
