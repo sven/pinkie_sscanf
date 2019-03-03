@@ -9,6 +9,7 @@ It currently supports the following patterns:
   * %x - hex values
   * %% - percent sign
   * %n - store current position in pointer
+  * maximum field width
 
 This implementation supports up to 64-bit numbers which can be configured by
 the define PINKIE\_CFG\_SSCANF\_MAX\_INT:
