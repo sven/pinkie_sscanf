@@ -60,7 +60,7 @@
 #define STR_FMT_SCANF   "%hhi %hi %"SCNi32" %"SCNi64" %hhu %hu %"SCNu32" %"SCNu64
 
 #define STR_XFMT_PRINTF "%hhx %hx %"PRIx32" %"PRIx64" 0x%hhx 0x%hx 0x%"PRIx32" 0x%"PRIx64
-#define STR_XFMT_SCANF  "%hhx %hx %"SCNx32" %"SCNx64" %hhu %hu %"SCNu32" %"SCNu64
+#define STR_XFMT_SCANF  "%hhx %hx %"SCNx32" %"SCNx64" %hhx %hx %"SCNx32" %"SCNx64
 
 
 /*****************************************************************************/
