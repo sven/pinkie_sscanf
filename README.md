@@ -17,7 +17,7 @@ the define PINKIE\_CFG\_SSCANF\_MAX\_INT:
   * PINKIE\_CFG\_SSCANF\_MAX\_INT == 1: 8 bit numbers
   * PINKIE\_CFG\_SSCANF\_MAX\_INT == 2: 8 to 16 bit numbers
   * PINKIE\_CFG\_SSCANF\_MAX\_INT == 4: 8 to 32 bit numbers
-  * PINKIE\_CFG\_SSCANF\_MAX\_INT == 8: 8 to 64 bit numbers
+  * PINKIE\_CFG\_SSCANF\_MAX\_INT == 8: 8 to 64 bit numbers (default)
 
 Tested on:
   - Atmel ATmega328P (8-bit uC, used in Arduino Nano)
